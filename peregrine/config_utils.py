@@ -12,6 +12,8 @@ from bilby.gw import prior as prior_gw
 from bilby.core import prior as prior_core
 from bilby.gw import source, conversion
 
+import pycentricity.waveform as wf
+
 
 def read_config(sysargs: list):
     """
@@ -72,14 +74,22 @@ def init_config(tmnre_parser, sysargs: list, sim: bool = False) -> dict:
             gw_source[key] = bool(strtobool(tmnre_parser["SOURCE"][key]))
     if gw_source["source_type"] in ["BBH"]:
         gw_source["fd_source_model"] = source.lal_binary_black_hole
+        gw_source["td_source_model"] = None
         gw_source[
             "param_conversion_model"
         ] = conversion.convert_to_lal_binary_black_hole_parameters
     elif gw_source["source_type"] in ["NSBH", "BNS"]:
         gw_source["fd_source_model"] = source.lal_binary_neutron_star
+        gw_source["td_source_model"] = None
         gw_source[
             "param_conversion_model"
         ] = conversion.convert_to_lal_binary_neutron_star_parameters
+    elif gw_source["source_type"] in ["eBBH"]:
+        gw_source["fd_source_model"] = None
+        gw_source["td_source_model"] = wf.seobnrpe_bbh_waveform_model
+        gw_source[
+            "param_conversion_model"
+        ] = conversion.convert_to_lal_binary_black_hole_parameters
     conf["source"] = gw_source
 
     waveform_params = {}
@@ -101,7 +111,7 @@ def init_config(tmnre_parser, sysargs: list, sim: bool = False) -> dict:
             waveform_params[key] = [
                 str(ifo) for ifo in tmnre_parser["WAVEFORM PARAMS"][key].split(",")
             ]
-        elif key in ["ifo_noise"]:
+        elif key in ["ifo_noise", "is_only22"]:
             waveform_params[key] = bool(strtobool(tmnre_parser["WAVEFORM PARAMS"][key]))
     conf["waveform_params"] = waveform_params
 
@@ -312,14 +322,19 @@ def populate_priors(tmnre_parser):
     ext_priors = {}
     # Populate intrinsic and extrinsic prior dictionaries
     for prior_type, prior_dict in zip(["INT", "EXT"], [int_priors, ext_priors]):
-        if tmnre_parser["SOURCE"]["source_type"] == "BBH":
+        if tmnre_parser["SOURCE"]["source_type"] in ["BBH", "eBBH"]:
             for key in tmnre_parser[f"{prior_type} PRIORS"].keys():
-                # Need to treat geocentric time differently
+                # Need to treat these parameters differently
                 if key not in ["geocent_time"]:
-                    if tmnre_parser["SOURCE"]["aligned_spins"] == "True":
-                        prior_dict[key] = prior_gw.BBHPriorDict(aligned_spin=True)[key]
-                    elif tmnre_parser["SOURCE"]["aligned_spins"] == "False":
-                        prior_dict[key] = prior_gw.BBHPriorDict()[key]
+                    if key in ["eccentricity"]:
+                        prior_dict[key] = prior_core.LogUniform(minimum=1e-4, maximum=0.4)
+                    elif key in ["relativistic_anomaly"]:
+                        prior_dict[key] = prior_core.Uniform(minimum=0, maximum=np.pi)
+                    else:
+                        if tmnre_parser["SOURCE"]["aligned_spins"] == "True":
+                            prior_dict[key] = prior_gw.BBHPriorDict(aligned_spin=True)[key]
+                        elif tmnre_parser["SOURCE"]["aligned_spins"] == "False":
+                            prior_dict[key] = prior_gw.BBHPriorDict()[key]
                     if key in tmnre_parser[f"{prior_type} DISTRIBUTIONS"].keys():
                         if tmnre_parser[f"{prior_type} DISTRIBUTIONS"][key].split(",")[
                             1
@@ -505,5 +520,4 @@ def populate_priors(tmnre_parser):
             ext_priors[key].maximum = float(
                 tmnre_parser["EXT PRIORS"][key].split(",")[1]
             )
-
     return int_priors, ext_priors

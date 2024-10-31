@@ -15,6 +15,7 @@ class Simulator(sl.Simulator):
         self.waveform_arguments = conf["waveform_params"].copy()
         self.ifo_list = conf["waveform_params"]["ifo_list"]
         self.fd_source_model = conf["source"]["fd_source_model"]
+        self.td_source_model = conf["source"]["td_source_model"]
         self.param_conversion_model = conf["source"]["param_conversion_model"]
         self.priors = conf["priors"].copy()
         self.int_priors = self.priors["int_priors"].copy()
@@ -32,6 +33,7 @@ class Simulator(sl.Simulator):
             start_time=self.waveform_arguments["start"],
             sampling_frequency=self.waveform_arguments["sampling_frequency"],
             frequency_domain_source_model=self.fd_source_model,
+            time_domain_source_model=self.td_source_model,
             parameter_conversion=self.param_conversion_model,
             waveform_arguments=self.waveform_arguments,
         )
