@@ -4,9 +4,9 @@ aligned_spins = False
 
 [WAVEFORM PARAMS]
 sampling_frequency = 2048
-duration = 8
+duration = 4
 start_offset = 2
-start = -6
+start = -2
 waveform_apprx = SEOBNRPE
 minimum_frequency = 10
 maximum_frequency = 1024
@@ -16,8 +16,8 @@ ifo_noise = True
 is_only22 = False
 
 [INJECTION]
-mass_1 = 39.53573995392598
-mass_2 = 34.8722208102226
+mass_1 = 36
+mass_2 = 29
 mass_ratio = 0.8857620985418904
 chirp_mass = 32.136969061169324
 luminosity_distance = 900
@@ -32,7 +32,7 @@ a_1 = 0.9701993491043245
 a_2 = 0.8117959745751914
 phi_12 = 6.220246980963511
 phi_jl = 1.884805935473119
-eccentricity = 0.2
+eccentricity = 0.1
 relativistic_anomaly = 0.0
 geocent_time = 0.0
 
@@ -43,8 +43,8 @@ theta_jn = 0.0,3.14159
 phase = 0.0,6.28318
 tilt_1 = 0.0,3.14159
 tilt_2 = 0.0,3.14159
-a_1 = 0.05,1.0
-a_2 = 0.05,1.0
+a_1 = 0.05,0.6
+a_2 = 0.05,0.6
 phi_12 = 0.0,6.28318
 phi_jl = 0.0,6.28318
 eccentricity = 1e-4,0.4
@@ -67,14 +67,14 @@ geocent_time = -0.1,0.1
 geocent_time = Uniform,
 
 [ZARR PARAMS]
-run_id = test_new_install
+run_id = test_seobnrpe_gpu
 use_zarr = True
 sim_schedule = 30_000,60_000,60_000,120_000,120_000,150_000,150_000,150_000
 chunk_size = 1000
 run_parallel = True
 njobs = 16
 targets = z_int,z_ext,z_total,d_t,d_f,d_f_w,n_t,n_f,n_f_w
-store_path = tmnre_store/test_new_install
+store_path = tmnre_store/test_seobnrpe_gpu
 run_description = 17D test for precessing eccentric BBH with high spin and low S/N
 
 [TMNRE]
@@ -87,7 +87,7 @@ resampler = False
 shuffling = True
 noise_targets = n_t,n_f_w
 generate_obs = False
-obs_path = tmnre_store/test_new_install/observation_test_new_install
+obs_path = tmnre_store/test_seobnrpe_cpu/observation_test_seobnrpe_gpu
 
 [SAMPLING]
 sampler = dynesty

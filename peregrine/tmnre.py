@@ -1,3 +1,4 @@
+#!/home/isobel.romero-shaw/.conda/envs/seobnrpe_peregrine/bin/python3.11
 print(
     r"""
              /'{>           Initialising PEREGRINE
@@ -7,7 +8,6 @@ print(
              m m            Version: v0.0.1 | April 2023
 """
 )
-
 import sys
 from datetime import datetime
 import glob
