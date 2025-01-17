@@ -20,7 +20,7 @@ mass_1 = 36
 mass_2 = 29
 mass_ratio = 0.8857620985418904
 chirp_mass = 32.136969061169324
-luminosity_distance = 900
+luminosity_distance = 500
 dec = 0.07084716171380845
 ra = 5.555599820502261
 theta_jn = 0.44320777946320117
@@ -28,8 +28,8 @@ psi = 1.0995170458005799
 phase = 5.089358282766109
 tilt_1 = 1.4974326044527126
 tilt_2 = 1.1019600169566186
-a_1 = 0.9701993491043245
-a_2 = 0.8117959745751914
+a_1 = 0.5
+a_2 = 0.4
 phi_12 = 6.220246980963511
 phi_jl = 1.884805935473119
 eccentricity = 0.1
@@ -37,17 +37,17 @@ relativistic_anomaly = 0.0
 geocent_time = 0.0
 
 [INT PRIORS]
-mass_ratio = 0.25,1.0
-chirp_mass = 25,60
-theta_jn = 0.0,3.14159
+mass_ratio = 0.75,1.0
+chirp_mass = 25,40
+theta_jn = 1.5,2.0 
 phase = 0.0,6.28318
-tilt_1 = 0.0,3.14159
-tilt_2 = 0.0,3.14159
-a_1 = 0.05,0.6
-a_2 = 0.05,0.6
+tilt_1 = 1.5,3.14159
+tilt_2 = 1,3.14159
+a_1 = 0.5,0.6
+a_2 = 0.4,0.45
 phi_12 = 0.0,6.28318
 phi_jl = 0.0,6.28318
-eccentricity = 1e-4,0.4
+eccentricity = 1e-1,0.4
 relativistic_anomaly = 0.0,0.01
 
 [INT DISTRIBUTIONS]
@@ -57,7 +57,7 @@ eccentricity = LogUniform,
 relativistic_anomaly = Uniform,
 
 [EXT PRIORS]
-luminosity_distance = 100,1500
+luminosity_distance = 400,500
 dec = -1.57079,1.57079
 ra = 0.0,6.28318
 psi = 0.0,3.14159
@@ -67,14 +67,14 @@ geocent_time = -0.1,0.1
 geocent_time = Uniform,
 
 [ZARR PARAMS]
-run_id = test_seobnrpe_gpu
+run_id = test_new_install
 use_zarr = True
 sim_schedule = 30_000,60_000,60_000,120_000,120_000,150_000,150_000,150_000
 chunk_size = 1000
 run_parallel = True
 njobs = 16
 targets = z_int,z_ext,z_total,d_t,d_f,d_f_w,n_t,n_f,n_f_w
-store_path = tmnre_store/test_seobnrpe_gpu
+store_path = tmnre_store/test_new_install
 run_description = 17D test for precessing eccentric BBH with high spin and low S/N
 
 [TMNRE]
@@ -87,7 +87,7 @@ resampler = False
 shuffling = True
 noise_targets = n_t,n_f_w
 generate_obs = False
-obs_path = tmnre_store/test_seobnrpe_gpu/observation_test_seobnrpe_gpu
+obs_path = tmnre_store/test_new_install/observation_test_new_install
 
 [SAMPLING]
 sampler = dynesty

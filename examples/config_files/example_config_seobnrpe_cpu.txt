@@ -67,14 +67,14 @@ geocent_time = -0.1,0.1
 geocent_time = Uniform,
 
 [ZARR PARAMS]
-run_id = test_seobnrpe_gpu
+run_id = test_seobnrpe_cpu
 use_zarr = True
 sim_schedule = 30_000,60_000,60_000,120_000,120_000,150_000,150_000,150_000
 chunk_size = 1000
 run_parallel = True
 njobs = 16
 targets = z_int,z_ext,z_total,d_t,d_f,d_f_w,n_t,n_f,n_f_w
-store_path = tmnre_store/test_seobnrpe_gpu
+store_path = tmnre_store/test_seobnrpe_cpu
 run_description = 17D test for precessing eccentric BBH with high spin and low S/N
 
 [TMNRE]
@@ -87,7 +87,7 @@ resampler = False
 shuffling = True
 noise_targets = n_t,n_f_w
 generate_obs = False
-obs_path = tmnre_store/test_seobnrpe_gpu/observation_test_seobnrpe_gpu
+obs_path = tmnre_store/test_seobnrpe_cpu/observation_test_seobnrpe_cpu
 
 [SAMPLING]
 sampler = dynesty
@@ -116,5 +116,6 @@ train_data = 0.9
 val_data = 0.1
 
 [DEVICE PARAMS]
-device = gpu
-n_devices = 1
+device = cpu
+n_devices = 0
+
